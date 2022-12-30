@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 
-const uri = "mongodb+srv://SocialMedia:zhUrTlO8QoEuyxWh@cluster0.vqco1yi.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://DB_USER:DB_PASS@cluster0.vqco1yi.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
