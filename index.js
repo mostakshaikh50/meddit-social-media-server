@@ -3,7 +3,7 @@ const cors = require('cors');
 const port = process.env.PORT || 5000;
 const app = express();
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middleware
 app.use(cors());
@@ -26,11 +26,37 @@ async function run(){
     try{
 
         const usersCollection = client.db('medditSocialMediaDb').collection('users');
+        const postsCollection = client.db('medditSocialMediaDb').collection('posts');
 
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
+        })
+
+        app.post('/userpost', async (req, res) => {
+            const user = req.body;
+            const result = await postsCollection.insertOne(user);
+            res.send(result);
+        })
+
+
+        app.get('/userpost/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await postsCollection.find(query).toArray();
+            res.send(result);
+        })
+
+        app.get('/userposts', async (req, res) => {
+            const query = {}
+            const posts = await postsCollection.find(query).toArray();
+            res.send(posts)
+        })
+
+        app.get('/sortedposts', async (req, res) => {
+            const posts = await postsCollection.find({}).sort({ likes: -1 }).limit(3).toArray();
+            res.send(posts)
         })
 
 
